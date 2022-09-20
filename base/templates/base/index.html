@@ -1,0 +1,45 @@
+
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  .home-container{
+      display:grid;
+      grid-template-columns:1fr 3fr 1fr;
+  }
+</style>
+<main class="layout layout--3">
+<div class="home-container">
+  <div class="topics">
+    {% include 'base/topic_component.html'%}
+  </div>
+    <div class="roomList" style="margin-right:3%;margin-left:3%">
+      
+      {% include 'base/feed_component.html'%}
+    </div>
+    <div class="activities">
+      {% include 'base/activity_component.html'%}
+    </div> 
+</div>
+</main>
+<nav>
+  <ul class="pagination justify-content-center">
+    {% if rooms.has_previous %}
+    <li class="page-item">
+          <a class="page-link" href="?page={{ rooms.previous_page_number}}">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+    </li>
+    {%endif%}
+    <li class="page-item"><p class="page-link text-muted">Page {{rooms.number}} of {{rooms.paginator.num_pages}}</p></li>
+    {% if rooms.has_next %}
+    <li class="page-item">
+          <a class="page-link" href="?page={{ rooms.next_page_number}}">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+    </li>
+    {%endif%}
+  </ul>
+</nav>
+{% endblock %}

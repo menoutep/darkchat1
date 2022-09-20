@@ -1,0 +1,12 @@
+
+{% extends 'base/base.html' %}
+{%load static%}
+{% block content %}
+<div class="col-md-8 mb-0 pb-0" style="margin: 0 auto; width:45%; margin-top:3%">
+    <form method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input class="btn btn-primary" type="submit" value="new chat">
+    </form>
+</div>
+{% endblock content %}
