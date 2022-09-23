@@ -1,4 +1,5 @@
 from django.dispatch import receiver
+from django.shortcuts import render,redirect
 from django.forms import ModelForm, TextInput,EmailInput, Textarea
 
 from .models import Room, Topic,Conversation
@@ -18,7 +19,12 @@ class RoomForm(ModelForm):
         exclude=['host','participants']
         
 class ConversationForm(ModelForm):
-    receiver=forms.ModelChoiceField(queryset=User.objects.all())
+    def __init__(self,request_user_id ,*args, **kwargs):
+        
+        super(ConversationForm, self).__init__(*args, **kwargs)
+        self.fields['receiver']=forms.ModelChoiceField(queryset=User.objects.exclude(id=request_user_id))
+
+    #receiver=forms.ModelChoiceField(queryset=User.objects.exclude(id=request.user.id))
     
     class Meta:
         model=Conversation

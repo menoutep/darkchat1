@@ -146,7 +146,10 @@ def createRoom(request):
 
 @login_required
 def createConversation(request):
-    form=ConversationForm()
+    form=ConversationForm(request.user.id) 
+    context={
+        'form':form,   
+    }
     if request.method == 'POST':
         q=request.user
         list_conv=Conversation.objects.filter(Q(expediteur__username__icontains=q) |
@@ -160,18 +163,14 @@ def createConversation(request):
             if r==conv.receiver.id :
                 return redirect('base:conversation', pk=conv.id)
             if r==conv.expediteur.id :
-                return redirect('base:conversation', pk=conv.id)
-        form=ConversationForm(request.POST)
+                render(request,'base/create_conversation.html',context)
+        form=ConversationForm(request.POST,request.user.id)
         if form.is_valid():
             conversation=form.save(commit=False)
             conversation.expediteur=request.user
             conversation.save()
             return redirect('base:conversation-index')
-        
-    context={
-        'form':form,
-        
-    }
+   
     
     return render(request,'base/create_conversation.html',context)
 
